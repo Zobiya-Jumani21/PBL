@@ -98,7 +98,7 @@ public class CSVReaderPakUni {
                 "USAR" , "USTB" , "USID" , "USWT" , "UOTP" , "UVAS" , "UOWH" , "ZIAD"};
 
         ArrayStack a1 = new ArrayStack(30); // for the pulication
-        ArrayStack rank = new ArrayStack(99);
+        ArrayStack rank = new ArrayStack(99); // for the pakRank
         String path="C:\\Users\\Fattani Computers\\Desktop\\universities.csv";
         List<paku> uni=readcsv(path);
 
@@ -134,7 +134,7 @@ int count=0;
             if (z== 100) {z = 0;}
             if (map.get(array[z]).pub.equals(String.valueOf(pubvalue[count]))){
                 a1.push(array[z]);
-                copy[z]= Integer.parseInt(map.get(array[z]).pub);
+                copy[z]= Integer.parseInt(map.get(array[z]).pub); // I copy  the publication  from the map because in compare I delete one by one valur from map
                 map.get(array[z]).pub="null";
                 count++;
                 z=0;
@@ -144,6 +144,41 @@ int count=0;
             map.get(array[m]).pub= String.valueOf(copy[m]);
         }
 
+        // start the pakRank Algorithm from here
+        // for copy the pakistani rank value
+
+        int[] pakRank = new int[array.length];
+
+
+        for (int j=0; j< pakRank.length; j++) {
+            pakRank[j]= Integer.parseInt(map.get(array[j]).pakRank.substring(0,map.get(array[j]).pakRank.indexOf(" ")));
+
+        }
+
+        // then sort the value by insertion sorting
+        for (int j=0; j< pakRank.length-1; j++){
+            int minimum=j;
+            for (int k=j+1; k< pakRank.length; k++){
+                if (pakRank[minimum]>pakRank[k]){
+                    minimum=k;
+                }
+            }
+            int temp=pakRank[minimum];
+            pakRank[minimum]=pakRank[j];
+            pakRank[j]=temp;
+        }//
+
+        int num=0;
+        for (int z=0; z<=pakRank.length; z++ ){
+            if (num== 100){break;}
+            if (z== 100) {z = 0;}
+
+            if (map.get(array[z]).pakRank.substring(0,map.get(array[z]).pakRank.indexOf(" ")).equals(String.valueOf(pakRank[num]))){
+                rank.push(array[z]);
+                num++;
+                z=0;
+            }
+        }
 
     } // main method
 
