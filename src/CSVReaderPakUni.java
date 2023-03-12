@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 // stack class
  class ArrayStack implements StacK {
@@ -12,6 +13,7 @@ import java.util.List;
     public ArrayStack(int cap) {
         a = new Object[cap];
     }
+
     // imEmpty Method
     public boolean isEmpty() {
         if (size == 0) {
@@ -20,70 +22,102 @@ import java.util.List;
             return false;
         }
     }
-    public String toString(ArrayStack s1) {
-        String data="[ ";
-
-        for (int i=s1.size-1; i>=0; i--) {
-            data = data + s1.a[i]; // concatenate data
-            if (i >0) {
-                data = data +" ,";
-            }
-        }
-        return data +" ]";
-    }
     @Override
-    public Object peek(){
-        if (size==0)throw new IllegalStateException("Stack empty");
+    public Object peek() {
+        if (size == 0) throw new IllegalStateException("Stack empty");
 
-        return a[size-1]; // because it is arrayed peek mean value take out
+        return a[size - 1]; // because it is arrayed peek mean value take out
     }
-    public Object pop(){ // delete the element
-        if (size==0)throw new IllegalStateException("Stack empty");{
+
+    public Object pop() { // delete the element
+        if (size == 0) throw new IllegalStateException("Stack empty");
+        {
         }
-        Object obj=a[--size];
-        a[size]=null;
+        Object obj = a[--size];
+        a[size] = null;
         return obj;
     }
-    public Object popLastElement(){ // delete the last element in stack
-        if (size==0)throw new IllegalStateException("Stack empty");{
-        }
-        Object obj=a[0];
-        a[0]=null;
-
-        System.arraycopy(a,1,a,0,--size);
-        return obj;
-    }
-    public void push(Object obj){
-        if (size==a.length)
+    public void push(Object obj) {
+        if (size == a.length)
             resize();
-        a[size++]=obj;
+        a[size++] = obj;
     }
-    private void resize(){
-        Object[] aa=a;
-        a=new Object[2*aa.length];
-        System.arraycopy(aa,0,a,0,size);
+
+    private void resize() {
+        Object[] aa = a;
+        a = new Object[2 * aa.length];
+        System.arraycopy(aa, 0, a, 0, size);
     }
-    public int size(){
+
+    public int size() {
         return size;
     }
-    public boolean equalMethod( ArrayStack one,ArrayStack two){
-        if (size==0) throw new IllegalStateException("Stack empty");
-        if (one.a[size-1].equals(two.a[size-1])){
-            return true;
-        }
-        else {
-            return false;
+
+    // top Five Universities
+    public void topFive(ArrayStack pub, ArrayStack rank, HashMap map) {
+        HashMap<String, paku> mapTable = new HashMap<>();
+        mapTable = map;
+
+        int count = 1;
+        System.out.println(" Top Five University Based On Publication and Pakistan Ranking ");
+        for (int i = size - 1; i >= 0; i--) {
+            if (count == 6) {
+                break;
+            }
+            System.out.println(count + ":  publication :" + mapTable.get(pub.a[i]) + "\n Pakistan" + "" + "Ranking:" + mapTable.get(rank.a[i]));
+            System.out.println(" ");
+            count++;
         }
     }
-    public ArrayStack copyStack(ArrayStack s1){
-        ArrayStack s2 = new ArrayStack(s1.size);
-        for (int i=size-1; i>=0; i--) {
-            s2.push(s1.a[i]);
+
+    // top Twenty Five Universities method
+    public void topTwentyFive(ArrayStack pub, ArrayStack rank, HashMap map) {
+        HashMap<String, paku> mapTable = new HashMap<>();
+        mapTable = map;
+
+        int count = 1;
+        System.out.println(" Top Twenty Five University Based On Publication and Pakistan Ranking ");
+        for (int i = size - 1; i >= 0; i--) {
+            if (count == 26) {
+                break;
+            }
+
+            System.out.println(count + ":  publication :" + mapTable.get(pub.a[i]) + "\n Pakistan" + "" + "Ranking:" + mapTable.get(rank.a[i]));
+            System.out.println(" ");
+            count++;
         }
-        return s2;
     }
-}
-// stack class end
+    //  from bottom five
+    public void bottomFive(ArrayStack pub, ArrayStack rank, HashMap map) {
+        HashMap<String, paku> mapTable = new HashMap<>();
+        mapTable = map;
+        int count = 100;
+        for (int i = 0; i < 5; i++) {
+            System.out.println(count + ":  publication :" + mapTable.get(pub.a[i]) + "\n Pakistan" + "" + "Ranking:" + mapTable.get(rank.a[i]));
+            System.out.println(" ");
+            count--;
+        }
+    }
+
+    public void percentile(int percen, HashMap map) {
+        int pos = (percen * size()-1) / 100;
+        System.out.println(map.get(a[pos]));
+    }
+
+    public void topPerformance(ArrayStack pub, ArrayStack rank, HashMap map) {
+
+        System.out.println("Top Performance University Details according to the Publications And Pakistan Rank");
+        System.out.println("\nPublication: " + map.get(pub.a[size - 1]));
+        System.out.println("\nPak Rank:" + map.get(rank.a[size - 1]));
+    }
+
+    // worst Performance
+    public void worstPerformance(ArrayStack pub, ArrayStack rank, HashMap map) {
+        System.out.println("Worst Performance University Details according to the Publications And Pakistan Rank");
+        System.out.println("\nPublication: " + map.get(pub.a[0]));
+        System.out.println("\nPak Rank:" + map.get(rank.a[0]));
+    }
+} // stack class end
 public class CSVReaderPakUni {
     public static void main(String[] args) {
 // four keywords of universities
@@ -97,7 +131,7 @@ public class CSVReaderPakUni {
                 "UOEP" , "UETL" , "UETP" , "UETT" , "UGUJ" , "HARI" , "UHSL" , "KARA" , "LAHR" , "MALK" , "UMTL" , "UPSH" ,
                 "USAR" , "USTB" , "USID" , "USWT" , "UOTP" , "UVAS" , "UOWH" , "ZIAD"};
 
-        ArrayStack a1 = new ArrayStack(30); // for the pulication
+        ArrayStack pub = new ArrayStack(30); // for the pulication
         ArrayStack rank = new ArrayStack(99); // for the pakRank
         String path="C:\\Users\\Fattani Computers\\Desktop\\universities.csv";
         List<paku> uni=readcsv(path);
@@ -133,7 +167,7 @@ int count=0;
             if (count== 100){break;}
             if (z== 100) {z = 0;}
             if (map.get(array[z]).pub.equals(String.valueOf(pubvalue[count]))){
-                a1.push(array[z]);
+                pub.push(array[z]);
                 copy[z]= Integer.parseInt(map.get(array[z]).pub); // I copy  the publication  from the map because in compare I delete one by one valur from map
                 map.get(array[z]).pub="null";
                 count++;
@@ -148,8 +182,6 @@ int count=0;
         // for copy the pakistani rank value
 
         int[] pakRank = new int[array.length];
-
-
         for (int j=0; j< pakRank.length; j++) {
             pakRank[j]= Integer.parseInt(map.get(array[j]).pakRank.substring(0,map.get(array[j]).pakRank.indexOf(" ")));
 
@@ -179,8 +211,82 @@ int count=0;
                 z=0;
             }
         }
+        Scanner textIO=new Scanner(System.in);
 
-    } // main method
+        while (true) {
+
+            System.out.println("\nMenu:");
+
+            System.out.println("\t\t 1.  For see the Full Information Of University Add a Key value of Universities:");
+
+            System.out.println("\n\t\t 2.  FOr See Top Five Universities based on number of publications and ranking:");
+
+            System.out.println("\n\t\t 3. For see The Top Twenty Five Universities based on number of publications and ranking:");
+
+            System.out.println("\n\t\t 4. For See The Bottom Five Universities based on number of publications and ranking: ");
+
+            System.out.println("\n\t\t 5. For See The 50th percentile universities based on number of publications and ranking .");
+
+            System.out.println("\n\t\t6.  : Best performance of universities on the provincial level :");
+
+            System.out.println("\n\t\t 7. : Worst performance of universities on the provincial level:");
+
+            System.out.println("\n\t\t8.  For Exit:");
+
+            System.out.print("\n\t\tEnter your command: ");
+
+            switch (textIO.nextInt()) {
+
+                case 1:
+                    System.out.println("\n\t\t\t\tABAU" + ",AWKU" + ",AGAK" + ",AIRU" + ",BAKU" + ",BAHZ" + ",BAHU" + ",BUIT" + ",BAQU" + ",BHNU" +
+                            "\n\t\t\t\tCECO" + ",CIIT" + ",DWET" + ",DUHS" + ",FJMU" + ",FJWU" + ",FEDU" + ",FORC" + ",FOUN" + ",GIKI" + ",GMAL" + ",GMUS" +
+                            "\n\t\t\t\tGCUF" + ",GCUL" + ",GCWF" + ",HAMD" + ",HAZR" + ",HITC" + ",INDS" + ",INTU" + ",INBA" + ",IOST" +
+                            "\n\t\t\t\tKUST" + ",LCWT" + ",LSOE" + ",LOMS" + ",LUMS" + ",MUET" + ",MUST" + ",MAJU" + ",NBAE" +
+                            "\n\t\t\t\tIIUI" + ",IQRA" + ",ICPS" + ",IUOB" + ",ISRA" + ",JSMu" + ",JUFW" + ",KIET" + ",KRIU" + ",KHYB" + ",KEMU" + ",KCFW" + ",NDEU" + ",NTEX" + ",NCES" +
+                            "\n\t\t\t\tNUML" + ",NSAT" + ",NEDU" + ",PIDE" + ",PIAS" + ",PMAS" + ",PRES" + ",QUES" + ",QIAU" + ",PAMU" + ",PIIU" + ",SSIT" +
+                            "\n\t\t\t\tSALU" + ",SBBW" + ",SZAB" + ",SAGU" + ",SMIU" + ",SSET" + ",SIBA" + ",UAGF" + ",UAGP" + ",UAJK" + ",UOBL" + ",UOCP" +
+                            "\n\t\t\t\tUOEP" + ",UETL" + ",UETP" + ",UETT" + ",UGUJ" + ",HARI" + ",UHSL" + ",KARA" + ",LAHR" + ",MALK" + ",UMTL" + ",UPSH" +
+                            "\n\t\t\t\tUSAR" + ",USTB" + ",USID" + ",USWT" + ",UOTP" + ",UVAS" + ",UOWH" + ",ZIAD");
+
+                    System.out.println("Enter a Key:");
+                    String key = textIO.next();
+                    System.out.println(map.get(key));
+                    break;
+
+                case 2:
+                    rank.topFive(pub, rank, map);
+                    break;
+
+                case 3:
+                    rank.topTwentyFive(pub, rank, map);
+                    break;
+
+                case 4:
+                    rank.bottomFive(pub, rank, map);
+                    break;
+
+                case 5:
+                    rank.percentile(50, map);
+                    break;
+                case 6:
+                    rank.topPerformance(pub, rank, map);
+                    break;
+                case 7:
+                    pub.worstPerformance(pub, rank, map);
+                    break;
+                case 8:
+
+                    return; // End program by returning from main()
+
+                default:
+
+                    System.out.println(" Illegal command.");
+
+                    break;
+
+            }
+        }
+        } // main method
 
     // method jis men data from csv file se objects men save hoti ja rahi hai
     private static  paku createUni(String[] data){
@@ -226,8 +332,7 @@ class paku{
         this.loc=loc;
         this.pub=pub;
     }
-
     public String toString(){
-        return name+" "+wRank+" "+asiaRank+" "+pakRank+" "+loc+" "+pub;
+        return "Name:"+name+", "+"World Rank:"+wRank+", "+"Asia Rank:"+asiaRank+", "+"Pakistan Rank:"+pakRank+", " +"Location:"+loc+", "+"Publication:"+pub;
     }
 } // end here
